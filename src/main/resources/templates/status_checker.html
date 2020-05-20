@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <title>Status Checker</title>
+</head>
+<body style="background-color: rgba(164,239,239,0.1);">
+
+<div class="container">
+    <div>
+        <table class="table table-hover table-dark dark-table">
+            <tr class="dark-table_tr" style="background-color: black; color: wheat;">
+                <td>Title</td>
+                <td>Last changed</td>
+                <td>URL</td>
+                <td>Actions</td>
+            </tr>
+            <tr class="dark-table_tr" th:each="checker : ${checkers}">
+                <td th:text="${checker.getTitle()}" th:title="${checker.getStatusDescription()}" th:if="${checker.getStatusDescription().equals('connection success')}" style="background-color: greenyellow; color: darkblue" ></td>
+                <td th:text="${checker.getTitle()}" th:title="${checker.getStatusDescription()}" th:if="${!checker.getStatusDescription().equals('connection success')}" style="background-color: red;" ></td>
+                <td th:text="${checker.getLastChangeStatus()}" th:title="'last status ' + ${checker.getLastStatus()}"></td>
+                <td>
+                    <a th:href="${checker.getUrl()}" th:text="${checker.getUrl()}"></a>
+                </td>
+                <td><a th:href="@{'/status_checker/delete/' + ${checker.getTitle()}} ">del</a></td>
+            </tr>
+        </table>
+    </div>
+    <a th:href="@{/status_checker/new}" style="padding: 7px; background-color: cornsilk; border: 1px solid black; color:  purple; font-weight: bold;">Create new checker</a>
+    <a th:href="@{/status_checker/deleteAll}" style="padding: 7px; background-color: cornsilk; border: 1px solid black; color:  purple; font-weight: bold;">Delete all</a>
+</div>
+
+<script type="text/javascript">
+    function updateStatus() {
+        setInterval('window.location = window.location.href;', 7000);
+    }
+    updateStatus();
+</script>
+
+</body>
+</html>
